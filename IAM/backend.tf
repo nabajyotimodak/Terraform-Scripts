@@ -1,10 +1,10 @@
 terraform {
   backend "s3" {
-    bucket = "integration-layer-state"
+    bucket = "terraform-backend-naba"
 
     key = "iam.tfstate"
 
     encrypt = "true"
-    region  = "us-east-1"
+    region  = "us-east-2"
   }
 }

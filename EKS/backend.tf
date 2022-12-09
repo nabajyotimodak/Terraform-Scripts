@@ -1,11 +1,11 @@
 terraform {
   backend "s3" {
-    bucket = "chatbot-eks"
+    bucket = "terraform-backend-naba"
 
     key = "eks.tfstate"
 
     encrypt = "true"
-    region  = "us-east-1"
+    region  = "us-east-2"
   }
 }
 

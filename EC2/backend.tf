@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket = "chatbot-eks"
+    bucket = "terraform-backend-naba"
 
     key = "ec2.tfstate"
 

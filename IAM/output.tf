@@ -34,3 +34,15 @@ output "aws_iam_role_policy_attachment_AWSLambdaRole" {
   description = "The policy attachment"
   value       = aws_iam_role_policy_attachment.AWSLambdaRole_attach.role
 }
+
+# Define Output Values
+
+output "aws_iam_role" {
+  description = "The role creation ARN"
+  value       = aws_iam_role.EventBridge_Schedular_execution_Role2.arn
+}
+
+output "aws_iam_role_policy" {
+  description = "The policy creation ARN"
+  value       = aws_iam_role_policy.EventBridge_Schedular_Policy.id
+}

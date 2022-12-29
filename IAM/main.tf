@@ -54,3 +54,47 @@ resource "aws_iam_role_policy_attachment" "AWSLambdaRole_attach" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaRole"
 }
 
+# IAM role "EventBridge_Schedular_execution_Role"
+
+resource "aws_iam_role" "EventBridge_Schedular_execution_Role2" {
+  name = "EventBridge_Schedular_execution_Role2"
+  assume_role_policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Sid" : "Statement1",
+          "Effect" : "Allow",
+          "Principal" : {
+            "Service" : "scheduler.amazonaws.com"
+          },
+          "Action" : "sts:AssumeRole"
+        }
+      ]
+    }
+  )
+  tags = {
+    Name    = "EventBridge_Schedular_execution_Role2"
+    Purpose = "For creating the EventBridge Schedules"
+  }
+}
+
+# The "EventBridge_Schedular_Policy" creation and attaching in the "EventBridge_Schedular_execution_Role2" role
+
+resource "aws_iam_role_policy" "EventBridge_Schedular_Policy" {
+  name = "EventBridge_Schedular_Policy"
+  role = aws_iam_role.EventBridge_Schedular_execution_Role2.id
+  policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Sid" : "VisualEditor0",
+          "Effect" : "Allow",
+          "Action" : "lambda:InvokeFunction",
+          "Resource" : "*"
+        }
+      ]
+    }
+  )
+}

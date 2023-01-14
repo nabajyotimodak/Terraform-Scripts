@@ -1,11 +1,11 @@
 # Define Output Values
 
-output "endpoint" {
+output "ec2_arn" {
   value       = aws_instance.MyEC2_Terraform.arn
   description = "ARN of the instance"
 }
 
-output "endpoint" {
+output "public_ip" {
   value       = aws_instance.MyEC2_Terraform.public_ip
-  description = "Detaild of the arn of the instance"
+  description = "Details of public_ip"
 }

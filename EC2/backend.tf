@@ -1,3 +1,5 @@
+## Backend COde syntax
+/*
 terraform {
   backend "s3" {
     bucket = "terraform-backend-naba"
@@ -8,4 +10,4 @@ terraform {
     region  = "us-east-2"
   }
 }
-
+*/

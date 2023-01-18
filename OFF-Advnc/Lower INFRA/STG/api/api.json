@@ -1,0 +1,949 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "advisory.com API",
+    "description": "Advisory.com APIs based on the OpenAPI 3.0 specification.",
+    "version": "0.0.1"
+  },
+  "tags": [
+    {
+      "name": "UserManagement",
+      "description": "User Management operations"
+    },
+    {
+      "name": "UserPreference",
+      "description": "User Preference operations"
+    }
+  ],
+  "paths": {
+    "/test": {
+      "get": {
+        "summary": "Test API",
+        "operationId": "testAPI",
+        "responses": {
+          "200": {
+            "description": "successfull operation"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:Util-TestAPI-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "tags": [
+          "UserManagement"
+        ],
+        "summary": "Create User",
+        "description": "Create User",
+        "operationId": "createUser",
+        "responses": {
+          "201": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UM-CreateUser-SF-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      },
+      "put": {
+        "tags": [
+          "UserManagement"
+        ],
+        "summary": "Update User",
+        "description": "This endpoint is used to update user details using a Salesforce ID",
+        "operationId": "updateUser",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UM-UpdateUser-SF-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": [
+          "UserManagement"
+        ],
+        "summary": "User Login",
+        "description": "This operation is used to login user",
+        "operationId": "loginUser",
+        "responses": {
+          "200": {
+            "description": "Login Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UM-Login-OK-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/forgot-password": {
+      "post": {
+        "tags": [
+          "UserManagement"
+        ],
+        "summary": "Forgot Password",
+        "description": "This endpoint is used for the forgot password mechanism",
+        "operationId": "forgotPassword",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UM-ForgotPassword-OK-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/change-password": {
+      "post": {
+        "tags": [
+          "UserManagement"
+        ],
+        "summary": "Change Password",
+        "description": "This endpoint is used for the change password",
+        "operationId": "changePassword",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UM-ChangePassword-OK-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/reset-password": {
+      "post": {
+        "tags": [
+          "UserManagement"
+        ],
+        "summary": "Reset Password",
+        "description": "This endpoint is used for the reset password of user",
+        "operationId": "resetPassword",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UM-ResetPassword-OK-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/verify-email": {
+      "post": {
+        "tags": [
+          "UserManagement"
+        ],
+        "summary": "Verify email of user",
+        "description": "Send verify account email to user",
+        "operationId": "verifyPrimaryEmail",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UM-VerifyEmail-SG-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/check-user": {
+      "post": {
+        "tags": [
+          "UserManagement"
+        ],
+        "summary": "Checks whether user with email is creatable",
+        "description": "This endpoint is used in the create account flow, to check whether user is creatable and returns account type and institutions",
+        "operationId": "checkUser",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UM-CheckUser-SF-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/verify-update-email": {
+      "post": {
+        "tags": [
+          "UserManagement"
+        ],
+        "summary": "Verify new email of user and update",
+        "description": "Verify email of user and update to new email",
+        "operationId": "verifyNewEmail",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UM-VerifyUpdateEmail-SF-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/update-email": {
+      "put": {
+        "tags": [
+          "UserManagement"
+        ],
+        "summary": "Updates primary email of the user",
+        "description": "This endpoint is used in the create account flow, to check whether user already exists or not",
+        "operationId": "updateEmail",
+        "responses": {
+          "201": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UM-UpdateUserEmail-SF-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/{salesforceId}": {
+      "get": {
+        "tags": [
+          "UserManagement"
+        ],
+        "summary": "Get User by Salesforce ID",
+        "description": "This endpoint is used to get user details using a Salesforce ID",
+        "operationId": "getUserById",
+        "parameters": [
+          {
+            "name": "salesforceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UM-GetUser-SF-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/create-case": {
+      "options": {
+        "summary": "CORS support for create case",
+        "description": "Enable CORS by returning correct headers",
+        "tags": [
+          "UserManagement"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for with CORS headers",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\n  \"statusCode\" : 200\n}\n"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Methods": "'*'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              },
+              "responseTemplates": {
+                "application/json": {
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "UserManagement"
+        ],
+        "summary": "Create Case",
+        "description": "This endpoint is used to create a support case on Salesforce",
+        "operationId": "createCase",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UM-CreateCase-SF-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy",
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Methods": "'*'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              },
+              "responseTemplates": {
+                "application/json": {
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/views": {
+      "post": {
+        "tags": [
+          "UserPreference"
+        ],
+        "summary": "Create metered reading",
+        "description": "Creating a user preference - metered reading",
+        "operationId": "createViewCount",
+        "responses": {
+          "201": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UP-CreateMeteredReading-DB-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/views/{email}": {
+      "get": {
+        "tags": [
+          "UserPreference"
+        ],
+        "summary": "Get page view count",
+        "description": "Get page view count for a member",
+        "operationId": "getPageViewCount",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "The Salesforce member id needs to be fetched the readlist for. ",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UP-GetMeteredReading-DB-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/like-content": {
+      "post": {
+        "tags": [
+          "UserPreference"
+        ],
+        "summary": "Create a like for a content by a user",
+        "description": "Creating a user preference - likedConent",
+        "operationId": "createLikeContent",
+        "responses": {
+          "201": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UP-CreateLikes-DB-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/dislike-content": {
+      "post": {
+        "tags": [
+          "UserPreference"
+        ],
+        "summary": "Create a disLike for a content by a user",
+        "description": "Creating a user preference - dislikecontent",
+        "operationId": "createDisLikeContent",
+        "responses": {
+          "201": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UP-CreateDislikes-DB-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/likes-dislikes": {
+      "put": {
+        "tags": [
+          "UserPreference"
+        ],
+        "summary": "Update likes and dislikes of a user",
+        "description": "The likes and dislikes of provided contentIds would be deleted from user preferences for given userId",
+        "operationId": "updateDislikeContent",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UP-DeleteLikesDislikes-DB-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/likes-dislikes/{salesforceId}": {
+      "get": {
+        "tags": [
+          "UserPreference"
+        ],
+        "summary": "Get like or dislike",
+        "description": "Get like or dislike by a member",
+        "operationId": "getLikeDislikeItem",
+        "parameters": [
+          {
+            "name": "salesforceId",
+            "in": "path",
+            "description": "The API retirves like or dislike for a content by a member. ",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UP-GetLikesDislikes-DB-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/likes-dislikes/{salesforceId}/{contentId}": {
+      "get": {
+        "tags": [
+          "UserPreference"
+        ],
+        "summary": "Get like or dislike for a page",
+        "description": "Get like or dislike by a use for a contentId",
+        "operationId": "getLikeDislikeContent",
+        "parameters": [
+          {
+            "name": "salesforceId",
+            "in": "path",
+            "description": "The API retirves like or dislike for a content by a member. ",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "contentId",
+            "in": "path",
+            "description": "The API retirves like or dislike for a content by a member. ",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UP-GetLikesDislikesPage-DB-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/interests/topics": {
+      "post": {
+        "tags": [
+          "UserPreference"
+        ],
+        "summary": "Create an Interest-Topic",
+        "description": "Create AOI for a user",
+        "operationId": "postInterest",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UP-CreateInterestTopic-DB-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      },
+      "put": {
+        "tags": [
+          "UserPreference"
+        ],
+        "summary": "Modify/Delete Interest-Topic",
+        "description": "Modify/Delete Interest for a member",
+        "operationId": "putDeleteInterest",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UP-DeleteInterestTopic-DB-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/interests/topics/{salesforceId}": {
+      "get": {
+        "tags": [
+          "UserPreference"
+        ],
+        "summary": "Get Interests-Topic",
+        "description": "Get AOIs for a user",
+        "operationId": "getInterest",
+        "parameters": [
+          {
+            "name": "salesforceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UP-GetInterestTopic-DB-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/interests/sectors": {
+      "post": {
+        "tags": [
+          "UserPreference"
+        ],
+        "summary": "Create an Interest-Sector",
+        "description": "Create AOI for a user",
+        "operationId": "postInterestSector",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UP-CreateInterestSector-DB-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      },
+      "put": {
+        "tags": [
+          "UserPreference"
+        ],
+        "summary": "Modify/Delete Interest-Sector",
+        "description": "Modify/Delete Interest for a member",
+        "operationId": "putDeleteInterestSector",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UP-DeleteInterestSector-DB-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/interests/sectors/{salesforceId}": {
+      "get": {
+        "tags": [
+          "UserPreference"
+        ],
+        "summary": "Get Interests-Sector",
+        "description": "Get AOIs for a user",
+        "operationId": "getInterestSector",
+        "parameters": [
+          {
+            "name": "salesforceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UP-GetInterestSector-DB-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/user/preferences/{salesforceId}/{email}": {
+      "get": {
+        "tags": [
+          "UserPreference"
+        ],
+        "summary": "Get all the user preferences",
+        "description": "Get all the user preferences",
+        "operationId": "getUserPreferences",
+        "parameters": [
+          {
+            "name": "salesforceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:826172738711:function:UP-GetAllUserPreferences-DB-Lambda-DEV/invocations",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy"
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "api_key": {
+        "type": "apiKey",
+        "name": "x-api-key",
+        "in": "header"
+      }
+    }
+  }
+}

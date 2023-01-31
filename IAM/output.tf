@@ -37,7 +37,7 @@ output "aws_iam_role_policy_attachment_AWSLambdaRole" {
 
 # Define Output Values
 
-output "aws_iam_role" {
+output "aws_iam_role2" {
   description = "The role creation ARN"
   value       = aws_iam_role.EventBridge_Schedular_execution_Role2.arn
 }

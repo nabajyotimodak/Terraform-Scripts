@@ -1,6 +1,7 @@
 # GENERAL EKS CLUSTER IN TERRAFORM SCRIPT
-
+# Link: https://www.techtarget.com/searchcloudcomputing/tutorial/How-to-deploy-an-EKS-cluster-using-Terraform 
 # Default EKS ROLE NEEDED FOR LAUNCHING THE EKS CLUSTER
+
 resource "aws_iam_role" "EKS_Cluster_Role" {
   name = "EKSClusterRole"
 

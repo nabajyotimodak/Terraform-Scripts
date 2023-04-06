@@ -1,8 +1,8 @@
 # Terraform-Scripts
-New Terraform sample codes are there
 
-Here, there are some Demo examples of real time terraform scripts for different AWS resources and will be keep on updating
-as per the things come in work execution.
+## New Terraform sample codes are there
+
+Here, there are some Demo examples of real time terraform scripts for different AWS resources and will be keep on updating as per the things come in work execution.
 
 The backend of the terraform has been stored in the S3 Bucket. As of now the bucket is kept Public.
 

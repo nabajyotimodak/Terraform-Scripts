@@ -9,7 +9,7 @@ locals {
   security-group-ec2 = var.security_group_ec2
   security-group-alb = var.security_group_alb
   availability-zone  = var.availability_zone
-  key-pair-name      = "rasa-key"
+  key-pair-name      = "<name of the key>"
   # iam-role-name     = "${var.iam_role_name}"
   # iam-role-arn      = "${var.iam_role_arn}"
   name-ec2               = "Rasa-Prod-new-vpc-Terraform"
@@ -107,7 +107,7 @@ resource "aws_lb" "alb_chatbot" {
 
   access_logs {
     bucket  = local.access_log_bucket_name
-    prefix  = "AdvisoryChatBotProd"
+    prefix  = "<Path inside the bucker. If only a folder, then the name of the folder>"
     enabled = true
   }
 
@@ -128,7 +128,7 @@ resource "aws_lb_listener" "https_listener" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  certificate_arn   = "arn:aws:acm:us-east-1:546140078785:certificate/b1387ae7-622c-45d2-9468-6c1ab1f62e5b"
+  certificate_arn   = "arn: ARN of the certificate"
 
   default_action {
     type = "fixed-response"

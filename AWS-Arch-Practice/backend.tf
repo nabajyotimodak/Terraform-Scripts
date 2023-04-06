@@ -6,9 +6,9 @@
 
 # terraform {
 #   backend "s3" {
-#     bucket = "optumresearchprod-tf-state"
+#     bucket = "<Bucket-Name>"
 
-#     key = "advisory_chatbot/chatbot.tfstate"
+#     key = "path inside the bucket/chatbot.tfstate"
 
 #     encrypt = "true"
 #     region  = "us-east-1"

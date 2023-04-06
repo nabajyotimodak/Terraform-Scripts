@@ -26,7 +26,7 @@ variable "subnet" {
 variable "security_group_ec2" {
   description = "Security group of the EC2"
   type        = string
-  default     = "sg-0527d72758fbf68a9"
+  default     = "ID of the SG of EC2"
 }
 
 variable "availability_zone" {
@@ -44,29 +44,29 @@ variable "iam_role_name" {
 variable "iam_role_arn" {
   description = "IAM role arn attached with the EC2"
   type        = string
-  default     = "arn:aws:iam::546140078785:role/rasa-dynamodb-access"
+  default     = "arn:aws:ARN of the role to add"
 }
 
 variable "vpc_id" {
   description = "VPC ID of the new-vpc created"
   type        = string
-  default     = "vpc-0a51d837a6632c9f5"
+  default     = "VPC-ID"
 }
 
 variable "security_group_alb" {
   description = "Security group of the ALB"
   type        = string
-  default     = "sg-07f317c759e414ad4"
+  default     = "ID of the SG of ALB"
 }
 
 variable "subnet_public1a" {
   description = "Subnet 1a for alb (1)"
   type        = string
-  default     = "subnet-0894c64ee3f12772b"
+  default     = "subnet-ID"
 }
 
 variable "subnet_public1b" {
   description = "Subnet 1b for alb (2)"
   type        = string
-  default     = "subnet-0ba31bd9f0075ff1f"
+  default     = "subnet-ID"
 }

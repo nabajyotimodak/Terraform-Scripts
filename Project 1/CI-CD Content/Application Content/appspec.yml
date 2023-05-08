@@ -1,0 +1,36 @@
+version: 0.0
+os: linux
+files:
+  - source: Advisory_Chat_Bot
+    destination: /home/ubuntu/Advisory_Chat_Bot
+hooks:
+  BeforeInstall:
+    - location: Scripts/clear_directory.sh
+      timeout: 180
+      runas: ubuntu
+  AfterInstall:
+    - location: Scripts/rasa_train.sh
+      timeout: 3600
+      runas: ubuntu
+    - location: Scripts/rasa_test.sh
+      timeout: 3600
+      runas: ubuntu
+    - location: Scripts/copy_models.sh
+      timeout: 3600
+      runas: ubuntu
+    - location: Scripts/kill_service.sh
+      timeout: 180
+      runas: ubuntu
+  ApplicationStart:
+    - location: Scripts/rasa_run.sh
+      timeout: 180
+      runas: ubuntu
+  ValidateService:
+    - location: Scripts/monitor_serviceport.sh
+      timeout: 180
+      runas: ubuntu
+  
+  # ApplicationStop:
+  #   - location: Scripts/kill_service.sh
+  #     timeout: 180
+  #     runas: ubuntu

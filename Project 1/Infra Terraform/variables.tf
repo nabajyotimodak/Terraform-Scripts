@@ -1,6 +1,5 @@
 ##############################################################
-# List of Locals / Local Variables
-# Input Variables for Region us-east-2 (Ohio)
+# List OF Variables
 ##############################################################
 
 
@@ -17,14 +16,38 @@ variable "custom_ami" {
   sensitive   = true
 }
 
-variable "subnet" {
+variable "subnet_private1a" {
+  description = "Subnet 1a for lambda-function"
+  type        = string
+  default     = ""
+}
+
+variable "subnet_private1b" {
   description = "Subnet of the EC2"
+  type        = string
+  default     = ""
+}
+
+variable "subnet_public1a" {
+  description = "Subnet 1a for alb (1)"
+  type        = string
+  default     = ""
+}
+
+variable "subnet_public1b" {
+  description = "Subnet 1b for alb (2)"
   type        = string
   default     = ""
 }
 
 variable "security_group_ec2" {
   description = "Security group of the EC2"
+  type        = string
+  default     = ""
+}
+
+variable "security_group_alb" {
+  description = "Security group of the ALB"
   type        = string
   default     = ""
 }
@@ -49,24 +72,6 @@ variable "iam_role_arn" {
 
 variable "vpc_id" {
   description = "VPC ID of the new-vpc created"
-  type        = string
-  default     = ""
-}
-
-variable "security_group_alb" {
-  description = "Security group of the ALB"
-  type        = string
-  default     = ""
-}
-
-variable "subnet_public1a" {
-  description = "Subnet 1a for alb (1)"
-  type        = string
-  default     = ""
-}
-
-variable "subnet_public1b" {
-  description = "Subnet 1b for alb (2)"
   type        = string
   default     = ""
 }

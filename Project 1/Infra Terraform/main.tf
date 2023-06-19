@@ -3,21 +3,22 @@
 ##############################################################
 
 locals {
-  ami                = var.custom_ami
-  subnet-ec2         = var.subnet
-  instance-type      = "t3.2xlarge"
-  security-group-ec2 = var.security_group_ec2
-  security-group-alb = var.security_group_alb
-  availability-zone  = var.availability_zone
-  key-pair-name      = "rasa-key"
+  ami                     = var.custom_ami
+  subnet-ec2              = var.subnet_private1b
+  subnet-public1a-alb     = var.subnet_public1a
+  subnet-public1b-alb     = var.subnet_public1b
+  subnet-private1a-lambda = var.subnet_private1a
+  instance-type           = "t3.2xlarge"
+  security-group-ec2      = var.security_group_ec2
+  security-group-alb      = var.security_group_alb
+  availability-zone       = var.availability_zone
+  key-pair-name           = "rasa-key"
   # iam-role-name     = "${var.iam_role_name}"
   # iam-role-arn      = "${var.iam_role_arn}"
   name-ec2               = "Rasa-Prod-new-vpc"
   environment            = "Production"
-  access_log_bucket_name = ""
+  access_log_bucket_name = "lp-cl-546140078785-us-east-1"
   vpc-id                 = var.vpc_id
-  subnet-public1a-alb    = var.subnet_public1a
-  subnet-public1b-alb    = var.subnet_public1b
 }
 
 
@@ -25,12 +26,28 @@ locals {
 # List of Data Sources
 ##############################################################
 
+data "aws_subnet" "optum_public_1a_alb" {
+  id = local.subnet-public1a-alb
+}
+
+data "aws_subnet" "optum_public_1b_alb" {
+  id = local.subnet-public1b-alb
+}
+
 data "aws_subnet" "optum_private_1b_ec2" {
   id = local.subnet-ec2
 }
 
+data "aws_subnet" "optum_private_1a_lambda" {
+  id = local.subnet-private1a-lambda
+}
+
 data "aws_security_group" "security_group_ec2" {
   id = local.security-group-ec2
+}
+
+data "aws_security_group" "security_group_alb" {
+  id = local.security-group-alb
 }
 
 data "aws_availability_zone" "availability_zone" {
@@ -43,18 +60,6 @@ data "aws_key_pair" "key_pair_name" {
 
 data "aws_vpc" "vpc_id" {
   id = local.vpc-id
-}
-
-data "aws_security_group" "security_group_alb" {
-  id = local.security-group-alb
-}
-
-data "aws_subnet" "optum_public_1a_alb" {
-  id = local.subnet-public1a-alb
-}
-
-data "aws_subnet" "optum_public_1b_alb" {
-  id = local.subnet-public1b-alb
 }
 
 # data "aws_iam_role" "iam_role" {
@@ -78,9 +83,9 @@ resource "aws_instance" "chatbot_ec2" {
   availability_zone           = data.aws_availability_zone.availability_zone.name
   user_data                   = file("userdata.sh")
   tags = {
-    "Name"      = local.name-ec2
-    "Env"       = local.environment
-    "Terraform" = "True"
+    Name      = local.name-ec2
+    Env       = local.environment
+    Terraform = "True"
   }
 }
 
@@ -112,9 +117,9 @@ resource "aws_lb" "alb_chatbot" {
   }
 
   tags = {
-    "Name"        = "alb-chatbot-prod"
-    "Environment" = "production"
-    "Terraform"   = "True"
+    Name        = "alb-chatbot-prod"
+    Environment = "production"
+    Terraform   = "True"
   }
 }
 
@@ -218,4 +223,283 @@ resource "aws_lb_listener_rule" "forward_rule_2" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.alb_tg.arn
   }
+}
+
+
+####################################################################
+#CREATION OF IAM POLICY FOR INDENTIFYING UNHEAKTHY TARGETS 
+#####################################################################
+
+resource "aws_iam_policy" "policy_for_lambda_role" {
+  name        = "test_policy"
+  path        = "/"
+  description = "My test policy"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Sid" : "LambdaLogging",
+          "Effect" : "Allow",
+          "Action" : [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+          ],
+          "Resource" : "*"
+        },
+        {
+          "Sid" : "SNS",
+          "Action" : [
+            "sns:Publish"
+          ],
+          "Effect" : "Allow",
+          "Resource" : "*"
+        },
+        {
+          "Sid" : "EC2",
+          "Action" : [
+            "ec2:CreateNetworkInterface",
+            "ec2:Describe*",
+            "ec2:AttachNetworkInterface",
+            "ec2:DeleteNetworkInterface"
+          ],
+          "Effect" : "Allow",
+          "Resource" : "*"
+        },
+        {
+          "Sid" : "ELB",
+          "Action" : [
+            "elasticloadbalancing:Describe*"
+          ],
+          "Effect" : "Allow",
+          "Resource" : "*"
+        },
+        {
+          "Sid" : "CW",
+          "Action" : [
+            "cloudwatch:putMetricData"
+          ],
+          "Effect" : "Allow",
+          "Resource" : "*"
+        }
+      ]
+    }
+  )
+  tags = {
+    Env       = "Prod"
+    Terraform = "True"
+    Name      = "Identifying_Unhealthy_ChatBot_Target_Policy"
+  }
+}
+
+
+####################################################################
+#CREATION OF IAM Role
+####################################################################
+
+resource "aws_iam_role" "iam_role_for_lambda" {
+  name = "Identifying_Unhealthy_ChatBot_Targets"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  assume_role_policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Principal" : {
+            "Service" : "lambda.amazonaws.com"
+          },
+          "Action" : "sts:AssumeRole"
+        }
+      ]
+    }
+  )
+  tags = {
+    Env       = "Prod"
+    Terraform = "True"
+    Name      = "Identifying_Unhealthy_ChatBot_Targets"
+  }
+}
+
+
+####################################################################
+#ATTACHMENT OF THE IAM-POLICY WITH THE IAM-ROLE
+####################################################################
+
+resource "aws_iam_role_policy_attachment" "attach_IAMpolicy_to_IAMrole" {
+  role       = aws_iam_role.iam_role_for_lambda.name
+  policy_arn = aws_iam_policy.policy_for_lambda_role.arn
+  depends_on = [aws_iam_policy.policy_for_lambda_role]
+}
+
+
+####################################################################
+#CREATING THE 1ST SNS TOPIC
+####################################################################
+
+resource "aws_sns_topic" "sns_topic_trigger" {
+  name            = "Identifying_Unhealthy_ChatBot_Targets_Lambda_Trigger"
+  display_name    = "1st Topic - Identifying_Unhealthy_ChatBot_Targets_Lambda_Trigger"
+  delivery_policy = <<EOF
+{
+  "http": {
+    "defaultHealthyRetryPolicy": {
+      "minDelayTarget": 20,
+      "maxDelayTarget": 20,
+      "numRetries": 3,
+      "numMaxDelayRetries": 0,
+      "numNoDelayRetries": 0,
+      "numMinDelayRetries": 0,
+      "backoffFunction": "linear"
+    },
+    "disableSubscriptionOverrides": false,
+    "defaultRequestPolicy": {
+      "headerContentType": "text/plain; charset=UTF-8"
+    }
+  }
+}
+EOF
+  tags = {
+    Env  = "prod"
+    Name = "Identifying_Unhealthy_ChatBot_Targets_Lambda_Trigger"
+
+  }
+}
+
+
+####################################################################
+#CREATING THE 2ND SNS TOPIC
+####################################################################
+
+resource "aws_sns_topic" "sns_topic_notification" {
+  name            = "Identifying_Unhealthy_ChatBot_Targets_Lambda_Notification"
+  display_name    = "Identifying_Unhealthy_ChatBot_Targets_Lambda_Notification"
+  delivery_policy = <<EOF
+{
+  "http": {
+    "defaultHealthyRetryPolicy": {
+      "minDelayTarget": 20,
+      "maxDelayTarget": 20,
+      "numRetries": 3,
+      "numMaxDelayRetries": 0,
+      "numNoDelayRetries": 0,
+      "numMinDelayRetries": 0,
+      "backoffFunction": "linear"
+    },
+    "disableSubscriptionOverrides": false,
+    "defaultRequestPolicy": {
+      "headerContentType": "text/plain; charset=UTF-8"
+    }
+  }
+}
+EOF
+  tags = {
+    Env  = "prod"
+    Name = "Identifying_Unhealthy_ChatBot_Targets_Lambda_Trigger"
+
+  }
+}
+
+
+######################################################################
+#CREATING THE SUBSCRIPTION OF THE 2ND-SNS TOPIC (FOR NOTIFICATION)
+######################################################################
+
+resource "aws_sns_topic_subscription" "users_email_target_1" {
+  topic_arn = aws_sns_topic.sns_topic_notification.arn
+  protocol  = "email"
+  endpoint  = "modakn@optum.com"
+}
+
+resource "aws_sns_topic_subscription" "users_email_target_2" {
+  topic_arn = aws_sns_topic.sns_topic_notification.arn
+  protocol  = "email"
+  endpoint  = "rananth@optum.com"
+}
+
+resource "aws_sns_topic_subscription" "users_email_target_3" {
+  topic_arn = aws_sns_topic.sns_topic_notification.arn
+  protocol  = "email"
+  endpoint  = "elangov@advisory.com"
+}
+
+resource "aws_sns_topic_subscription" "users_email_target_4" {
+  topic_arn = aws_sns_topic.sns_topic_notification.arn
+  protocol  = "email"
+  endpoint  = "bonnettec@advisory.com"
+}
+
+
+######################################################################
+#CREATING THE CLOUD WATCH ALARM
+######################################################################
+
+resource "aws_cloudwatch_metric_alarm" "alb_unhealthyhosts" {
+  alarm_name          = "Identifying_Unhealthy_ChatBot_Targets"
+  metric_name         = "UnHealthyHostCount"
+  statistic           = "Maximum"
+  period              = "60"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  threshold           = "3"
+  evaluation_periods  = 1
+  datapoints_to_alarm = "3"
+  treat_missing_data  = "missing"
+  namespace           = "AWS/ApplicationELB"
+  alarm_description   = "Number of un-healthy nodes in Target Group"
+  actions_enabled     = "true"
+  alarm_actions       = [aws_sns_topic.sns_topic_trigger.arn]
+  dimensions = {
+    TargetGroup      = aws_lb_target_group.alb_tg.arn
+    LoadBalancer     = aws_lb.alb_chatbot.arn
+    AvailabilityZone = "us-east-1b"
+  }
+}
+
+
+######################################################################
+#CREATING THE LAMBDA FUNCTION
+######################################################################
+
+resource "aws_lambda_function" "test_lambda" {
+  # If the file is not in the current working directory you will need to include a path.module in the filename.
+  filename      = "identifying_unhealthy_targets.zip"
+  function_name = "identitying_unhealthy_targets"
+  role          = aws_iam_role.iam_role_for_lambda.arn
+  handler       = "identitying_unhealthy_targets.lambda_handler"
+  #source_code_hash = data.archive_file.lambda.output_base64sha256
+  runtime = "python3.9"
+  vpc_config {
+    subnet_ids         = [data.aws_subnet.optum_public_1a_alb.id, data.aws_subnet.optum_public_1b_alb.id, data.aws_subnet.optum_private_1b_ec2.id, data.aws_subnet.optum_private_1a_lambda.id]
+    security_group_ids = [data.aws_security_group.security_group_ec2.id]
+  }
+  environment {
+    variables = {
+      foo                  = "bar"
+      NAMESPACE            = "AWS/ApplicationELB"
+      ONDEMAND_HEALTHCHECK = "True"
+      SNS_TOPIC            = aws_sns_topic.sns_topic_notification.arn
+      TARGETGROUP_ARN      = aws_lb_target_group.alb_tg.arn
+      TARGETGROUP_TYPE     = "Instance"
+    }
+  }
+}
+
+/*In the AWS console, after clicking a function name and selecting the configuration tab, you can create triggers.
+  For example, as we need to add a SNS trigger (i.e., the 1st SNS Topic has to add as the trigger for the Lambda function),
+We need to create an SNS-Topic Subscription in terraform. Similar actions can be also dome in AWS Consle orelse we have an
+option to do the same in lambda function in console itself which will automatically update the SNS=Topic Subscription */
+
+############ Creation of an SNS-Topic-Subscription for add the 1st SNS Topic as Trigger to the Lambda Function ################
+
+resource "aws_sns_topic_subscription" "sns_trigger_to_lambda" {
+  topic_arn  = aws_sns_topic.sns_topic_trigger.arn
+  protocol   = "lambda"
+  endpoint   = aws_lambda_function.test_lambda.arn # "lambda arn here"
+  depends_on = [aws_lambda_function.test_lambda]
 }

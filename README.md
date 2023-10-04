@@ -17,3 +17,6 @@ Run [terraform plan] to check the plan of terraform what resources it going to c
 Run [terraform apply --auto-approve] to apply the code for creating the resource.
 
 Run [terraform destroy --auto-approve] to delete the entire configuration/infrastructure created by the current code of terraform.
+
+Sometimes, configuring the AWS credentials also not initialize the backend. At that time, we can rin the init command in the bellow format:
+[ terraform init -backend-config="access_key=<your access key>" -backend-config="secret_key=<your secret key>" ]

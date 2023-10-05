@@ -20,3 +20,29 @@ Run [terraform destroy --auto-approve] to delete the entire configuration/infras
 
 Sometimes, configuring the AWS credentials also not initialize the backend. At that time, we can rin the init command in the bellow format:
 [ terraform init -backend-config="access_key=<your access key>" -backend-config="secret_key=<your secret key>" ]
+
+
+# Some extra concepts:
+## COncept -1
+Sometimes with some basic provider block configuration the terraform scripts may not work showing an error such as:
+### Error: error configuring Terraform AWS Provider: no valid credential sources for Terraform AWS Provider found.
+Please see https://registry.terraform.io/providers/hashicorp/aws
+for more information about providing credentials.
+### Error: NoCredentialProviders: no valid providers in chain
+caused by: EnvAccessKeyNotFound: failed to find credentials in the environment.
+SharedCredsLoad: failed to load profile, optumresearchprod-tf.
+EC2RoleRequestError: no EC2 instance role found
+caused by: RequestError: send request failed
+caused by: Get "http://169.254.169.254/latest/meta-data/iam/security-credentials/": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+
+  on main.tf line 12, in provider "aws":
+  12: provider "aws" {...
+### At that time we have to provide the cloud provider's credentials in the provider block and we can proceed like such as shown below:
+provider "cloud-name" {
+  profile = "any default name"
+  region  = "region in the cloud"
+  access_key = "<your-access-key>"
+  secret_key = "<your-secret-key"
+  # Controlling version to help ensure consistence and only apply tested versions.
+  version = "~> 3.0"
+}

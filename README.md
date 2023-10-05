@@ -24,6 +24,7 @@ Sometimes, configuring the AWS credentials also not initialize the backend. At t
 # Some extra concepts:
 ## Concept -1
 Sometimes with some basic provider block configuration the terraform scripts may not work showing an error such as:
+```
 ### Error: error configuring Terraform AWS Provider: no valid credential sources for Terraform AWS Provider found.
 ### Error: NoCredentialProviders: no valid providers in chain
 caused by: EnvAccessKeyNotFound: failed to find credentials in the environment.
@@ -32,7 +33,9 @@ EC2RoleRequestError: no EC2 instance role found
 caused by: RequestError: send request failed
   on main.tf line 12, in provider "aws":
   12: provider "aws" {...
+```
 ### At that time we have to provide the cloud provider's credentials in the provider block and we can proceed like such as shown below:
+```
 provider "cloud-name" {
   profile = "any default name"
   region  = "region in the cloud"
@@ -40,3 +43,4 @@ provider "cloud-name" {
   secret_key = "<your-secret-key"
   version = "~> 3.0"
   }
+```

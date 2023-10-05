@@ -38,6 +38,5 @@ provider "cloud-name" {
   region  = "region in the cloud"
   access_key = "<your-access-key>"
   secret_key = "<your-secret-key"
-  # Controlling version to help ensure consistence and only apply tested versions.
   version = "~> 3.0"
-}
+  }

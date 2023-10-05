@@ -34,7 +34,7 @@ caused by: RequestError: send request failed
   on main.tf line 12, in provider "aws":
   12: provider "aws" {...
 ```
-### At that time we have to provide the cloud provider's credentials in the provider block and we can proceed like such as shown below:
+At that time we have to provide the cloud provider's credentials in the provider block and we can proceed like such as shown below:
 ```
 provider "cloud-name" {
   profile = "any default name"
